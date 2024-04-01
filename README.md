@@ -34,9 +34,10 @@ in fact the event’s highest selling phone? Which one generated the most revenu
             * I aggregate these values by week, and had 4 weeks of lag.
             * Because I used age of product for the windows and not absolute dates, I had to make two prediction for some products during the Jan 24 event, and taking the linear weighted proportion of each prediction based on how much each overlapped with the event. All the details are found in the notebook.
         * This combination was designed to provide all the inputs needed to a more intutive approach, where the # units sold for a product is given by:
-        $$ S_t = J_t[\theta] + A_t[\theta]$$
-        * see the [eda.ipynb](./eda.ipynb) and [predict.ipynb](./predict.ipynb) for further details of this.
-        * The model does not consider competition, and relies on the having the price set prior to the prediction of the number of units sold. Therefore, the problem of competition is taken into consideration by the price input, if we assume that the price setting process tries to achieve competitiveness.
+            * $ S_t \sim J_t[\theta] + A_t[\theta]$
+            * The formula tells us that the sales $S_t$ is composed of an impulse compnent $J_t$ that is the initial demand for a new phone, and $A_t$ the auto-regressive component.
+            * see the [eda.ipynb](./eda.ipynb) and [predict.ipynb](./predict.ipynb) for further details on actual implementation and discussion, where I use an XGBoost model in place of having separate $J_t$ and $A_t$ components.
+        * The model does not consider competition, and relies on the having the price set prior to the prediction of the number of units sold. Therefore, the problem of competition is taken into consideration by the price input, if we assume that the price-setting process tries to achieve competitiveness.
         * I optimize a distributional loss to get the  $\lambda$ of a Poisson distribution. Distributional regression is particularly suitable when we are trying to reduce absolute error. For this particular problem, the Poisson distribution is effective, because it models the count of events whose time-to-event follows an exponential distribution - like time until the next click on an ad, the next visit to the website, or the next purchase of a phone.
 3. How would you evaluate your prediction?
     * Firstly, I used a validation set to decide on overfit criteria. Then I measure the goodness of fit to a Poisson distribution. I used 80th percentile boundaries, and both the validation and Jan event data had 70% of the samples fit inside their predicted 80% boundaries. Usually the validation/test sets are more dispersed, so 70% is quite good.
