@@ -45,4 +45,15 @@ in fact the event’s highest selling phone? Which one generated the most revenu
 4. The model acheived about a 58% wMAPE on predictions, and after doing proportional weightings to fit the Jan24 period, a 68% wMAPE. This is for 2769 different phone, but most of which had 0 sales in the period - however, 0 sales does not affect wMAPE very much. This estimate tells us that most products had very inaccurate predictions.
 5. New phones:
     * It's possible to pick similar phones from those already launched and price the new phone more or less to match and adjust by some heuristic from there. , we could use two methods:
-    * To predict the sales, simply use the model I implemented, which is designed to accept new products, as well. At the end of [predict.ipynb](./predict.ipynb) we show theses predictions for products launched during the Jan 24 event. 
+    * To predict the sales, simply use the model I implemented, which is designed to accept new products, as well. At the end of [predict.ipynb](./predict.ipynb) we show theses predictions for products launched during the Jan 24 event.
+
+# Supplement
+
+A csv of the predictions for #2 was requested. This can be found in the file [final.csv](./data/final.csv).
+
+Columns:
+* **index**: fsn
+* **alpha_gross_units**: the actual gross units for the product during Jun24
+* **units**: The units sold predicted by the model
+* **abs_pct_err**: (alpha_gross_units - units) / (alpha_gross_units + 1)
+* **abs_err**: (alpha_gross_units - units)
